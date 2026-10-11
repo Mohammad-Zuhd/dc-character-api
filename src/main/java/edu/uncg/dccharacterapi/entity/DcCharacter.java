@@ -21,22 +21,19 @@ public class DcCharacter {
     @NotBlank(message = "Description is required")
     private String description;
 
-    private String universe;
-    private String powers;
+    private String role;
+    private String species;
+    private String location;
 
     public DcCharacter() {
     }
 
-    public DcCharacter(String name, String description,
-                       String universe, String powers) {
-        this.name = name;
-        this.description = description;
-        this.universe = universe;
-        this.powers = powers;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -55,19 +52,27 @@ public class DcCharacter {
         this.description = description;
     }
 
-    public String getUniverse() {
-        return universe;
+    public String getRole() {
+        return role;
     }
 
-    public void setUniverse(String universe) {
-        this.universe = universe;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public String getPowers() {
-        return powers;
+    public String getSpecies() {
+        return species;
     }
 
-    public void setPowers(String powers) {
-        this.powers = powers;
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

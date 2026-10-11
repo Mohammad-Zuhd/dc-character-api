@@ -1,11 +1,10 @@
 package edu.uncg.dccharacterapi.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import edu.uncg.dccharacterapi.entity.DcCharacter;
 import edu.uncg.dccharacterapi.repository.DcCharacterRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DcCharacterService {
@@ -21,8 +20,7 @@ public class DcCharacterService {
     }
 
     public DcCharacter getCharacterById(Long id) {
-        return repository.findById(id)
-                .orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     public DcCharacter createCharacter(DcCharacter character) {
@@ -34,8 +32,10 @@ public class DcCharacterService {
                 .map(character -> {
                     character.setName(updatedCharacter.getName());
                     character.setDescription(updatedCharacter.getDescription());
-                    character.setUniverse(updatedCharacter.getUniverse());
-                    character.setPowers(updatedCharacter.getPowers());
+                    character.setRole(updatedCharacter.getRole());
+                    character.setSpecies(updatedCharacter.getSpecies());
+                    character.setLocation(updatedCharacter.getLocation());
+
                     return repository.save(character);
                 })
                 .orElse(null);
@@ -50,8 +50,8 @@ public class DcCharacterService {
         return true;
     }
 
-    public List<DcCharacter> getCharactersByUniverse(String universe) {
-        return repository.findByUniverseIgnoreCase(universe);
+    public List<DcCharacter> getCharactersByRole(String role) {
+        return repository.findByRoleIgnoreCase(role);
     }
 
     public List<DcCharacter> searchCharactersByName(String name) {
