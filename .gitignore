@@ -32,3 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 app-log.txt
+
+
+### Environment variables and local secrets
+.env
+.env.*
+!.env.example
