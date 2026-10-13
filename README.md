@@ -31,7 +31,7 @@ Characters are stored in the `characters` database table.
 |----------|-------------------------------|-------------------------------------------------|----------------|
 | `GET`    | `/api/characters`             | Retrieve all characters                         | `200 OK`       |
 | `GET`    | `/api/characters/{id}`        | Retrieve a character by ID                      | `200 OK`       |
-| `POST`   | `/api/characters`             | Create a character                              | `200 OK`       |
+| `POST`   | `/api/characters`             | Create a character                              | `201 created`       |
 | `PUT`    | `/api/characters/{id}`        | Update a character                              | `200 OK`       |
 | `DELETE` | `/api/characters/{id}`        | Delete a character                              | `204 No Content` |
 | `GET`    | `/api/characters?role=Hero`   | Filter characters by role                       | `200 OK`       |
