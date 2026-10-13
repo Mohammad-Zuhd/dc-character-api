@@ -1,3 +1,4 @@
+
 package edu.uncg.dccharacterapi.entity;
 
 import jakarta.persistence.Entity;
@@ -24,6 +25,8 @@ public class DcCharacter {
     private String role;
     private String species;
     private String location;
+    private String powers;
+    private String universe;
 
     public DcCharacter() {
     }
@@ -74,5 +77,21 @@ public class DcCharacter {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getPowers() {
+        return powers;
+    }
+
+    public void setPowers(String powers) {
+        this.powers = powers;
+    }
+
+    public String getUniverse() {
+        return universe;
+    }
+
+    public void setUniverse(String universe) {
+        this.universe = universe;
     }
 }
