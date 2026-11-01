@@ -28,6 +28,9 @@ public class DcCharacter {
     private String powers;
     private String universe;
 
+    // Image URL for the character
+    private String imageUrl;
+
     public DcCharacter() {
     }
 
@@ -93,5 +96,13 @@ public class DcCharacter {
 
     public void setUniverse(String universe) {
         this.universe = universe;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

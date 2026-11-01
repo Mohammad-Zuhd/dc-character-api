@@ -1,3 +1,4 @@
+
 package edu.uncg.dccharacterapi.service;
 
 import edu.uncg.dccharacterapi.entity.DcCharacter;
@@ -19,6 +20,32 @@ public class DcCharacterService {
         return repository.findAll();
     }
 
+    public List<DcCharacter> getCharactersByRole(String role) {
+        return repository.findByRoleIgnoreCase(role);
+    }
+
+      // Combines optional filters. Either argument may be null.
+    public List<DcCharacter> searchCharacters(String name, String role) {
+
+        String searchName = name == null ? "" : name.trim();
+        String searchRole = role == null ? "" : role.trim();
+
+        boolean hasName = !searchName.isBlank();
+        boolean hasRole = !searchRole.isBlank();
+
+        if (hasName && hasRole) {
+            return repository.findByNameContainingIgnoreCaseAndRoleIgnoreCase(
+                    searchName, searchRole);
+        }
+        if (hasName) {
+            return repository.findByNameContainingIgnoreCase(searchName);
+        }
+        if (hasRole) {
+            return repository.findByRoleIgnoreCase(searchRole);
+        }
+        return repository.findAll();
+    }
+
     public DcCharacter getCharacterById(Long id) {
         return repository.findById(id).orElse(null);
     }
@@ -28,17 +55,22 @@ public class DcCharacterService {
     }
 
     public DcCharacter updateCharacter(Long id, DcCharacter updatedCharacter) {
-        return repository.findById(id)
-                .map(character -> {
-                    character.setName(updatedCharacter.getName());
-                    character.setDescription(updatedCharacter.getDescription());
-                    character.setRole(updatedCharacter.getRole());
-                    character.setSpecies(updatedCharacter.getSpecies());
-                    character.setLocation(updatedCharacter.getLocation());
+        DcCharacter existing = getCharacterById(id);
 
-                    return repository.save(character);
-                })
-                .orElse(null);
+        if (existing == null) {
+            return null;
+        }
+
+        existing.setName(updatedCharacter.getName());
+        existing.setDescription(updatedCharacter.getDescription());
+        existing.setRole(updatedCharacter.getRole());
+        existing.setSpecies(updatedCharacter.getSpecies());
+        existing.setLocation(updatedCharacter.getLocation());
+        existing.setPowers(updatedCharacter.getPowers());
+        existing.setUniverse(updatedCharacter.getUniverse());
+        existing.setImageUrl(updatedCharacter.getImageUrl());
+
+        return repository.save(existing);
     }
 
     public boolean deleteCharacter(Long id) {
@@ -48,10 +80,6 @@ public class DcCharacterService {
 
         repository.deleteById(id);
         return true;
-    }
-
-    public List<DcCharacter> getCharactersByRole(String role) {
-        return repository.findByRoleIgnoreCase(role);
     }
 
     public List<DcCharacter> searchCharactersByName(String name) {
