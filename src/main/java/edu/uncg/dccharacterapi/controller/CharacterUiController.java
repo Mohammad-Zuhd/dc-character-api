@@ -142,5 +142,30 @@ public class CharacterUiController {
 
         return "redirect:/characters/" + id;
     }
+    
+    // ----- Delete Character -----
+    @PostMapping("/characters/{id}/delete")
+    public String deleteCharacter(
+            @PathVariable Long id,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        DcCharacter character = service.getCharacterById(id);
+
+        if (character == null) {
+            model.addAttribute("message", "Character not found.");
+            return "error";
+        }
+
+        String characterName = character.getName();
+
+        service.deleteCharacter(id);
+
+        redirectAttributes.addFlashAttribute(
+                "message", characterName + " was removed.");
+
+        return "redirect:/";
+    }
+
 
 }
