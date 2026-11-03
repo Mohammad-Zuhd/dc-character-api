@@ -1,6 +1,7 @@
 
 package edu.uncg.dccharacterapi.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,10 +10,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.uncg.dccharacterapi.entity.DcCharacter;
 import edu.uncg.dccharacterapi.service.DcCharacterService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @Controller
@@ -24,8 +27,7 @@ public class CharacterUiController {
         this.service = service;
     }
 
-  
-    // Gallery and search
+    // ----- Gallery and Search -----
     @GetMapping("/")
     public String index(
             @RequestParam(required = false) String name,
@@ -41,24 +43,23 @@ public class CharacterUiController {
         return "index";
     }
 
-
     // ----- Details -----
     @GetMapping("/characters/{id}")
-    public String details(@PathVariable Long id, Model model) {
+    public ModelAndView details(@PathVariable Long id) {
 
         DcCharacter character = service.getCharacterById(id);
 
         if (character == null) {
-            model.addAttribute("message", "Character not found.");
-            return "error";
+            return new ModelAndView("error", HttpStatus.NOT_FOUND);
         }
 
-        model.addAttribute("character", character);
+        ModelAndView modelAndView = new ModelAndView("details");
+        modelAndView.addObject("character", character);
 
-        return "details";
+        return modelAndView;
     }
 
-    // ----- Add -----
+    // ----- Add Character -----
     @GetMapping("/characters/new")
     public String newForm(Model model) {
 
@@ -81,6 +82,7 @@ public class CharacterUiController {
             model.addAttribute("formAction", "/characters");
             model.addAttribute("validationError",
                     "Please enter a valid name and description.");
+
             return "character-form";
         }
 
@@ -90,18 +92,19 @@ public class CharacterUiController {
                 "message", created.getName() + " was added.");
 
         return "redirect:/";
-
-        
     }
-    
+
     // ----- Edit Character -----
     @GetMapping("/characters/{id}/edit")
-    public String editForm(@PathVariable Long id, Model model) {
+    public String editForm(
+            @PathVariable Long id,
+            Model model,
+            HttpServletResponse response) {
 
         DcCharacter character = service.getCharacterById(id);
 
         if (character == null) {
-            model.addAttribute("message", "Character not found.");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "error";
         }
 
@@ -118,15 +121,17 @@ public class CharacterUiController {
             @Valid @ModelAttribute("character") DcCharacter character,
             BindingResult result,
             Model model,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpServletResponse response) {
 
         if (service.getCharacterById(id) == null) {
-            model.addAttribute("message", "Character not found.");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "error";
         }
 
         if (result.hasErrors()) {
             character.setId(id);
+
             model.addAttribute("formTitle", "Edit Character");
             model.addAttribute("formAction", "/characters/" + id);
             model.addAttribute("validationError",
@@ -142,18 +147,18 @@ public class CharacterUiController {
 
         return "redirect:/characters/" + id;
     }
-    
+
     // ----- Delete Character -----
     @PostMapping("/characters/{id}/delete")
     public String deleteCharacter(
             @PathVariable Long id,
-            Model model,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpServletResponse response) {
 
         DcCharacter character = service.getCharacterById(id);
 
         if (character == null) {
-            model.addAttribute("message", "Character not found.");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "error";
         }
 
@@ -166,6 +171,4 @@ public class CharacterUiController {
 
         return "redirect:/";
     }
-
-
 }
