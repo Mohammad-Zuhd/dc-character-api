@@ -90,5 +90,57 @@ public class CharacterUiController {
                 "message", created.getName() + " was added.");
 
         return "redirect:/";
+
+        
     }
+    
+    // ----- Edit Character -----
+    @GetMapping("/characters/{id}/edit")
+    public String editForm(@PathVariable Long id, Model model) {
+
+        DcCharacter character = service.getCharacterById(id);
+
+        if (character == null) {
+            model.addAttribute("message", "Character not found.");
+            return "error";
+        }
+
+        model.addAttribute("character", character);
+        model.addAttribute("formTitle", "Edit Character");
+        model.addAttribute("formAction", "/characters/" + id);
+
+        return "character-form";
+    }
+
+    @PostMapping("/characters/{id}")
+    public String updateCharacter(
+            @PathVariable Long id,
+            @Valid @ModelAttribute("character") DcCharacter character,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        if (service.getCharacterById(id) == null) {
+            model.addAttribute("message", "Character not found.");
+            return "error";
+        }
+
+        if (result.hasErrors()) {
+            character.setId(id);
+            model.addAttribute("formTitle", "Edit Character");
+            model.addAttribute("formAction", "/characters/" + id);
+            model.addAttribute("validationError",
+                    "Please enter a valid name and description.");
+
+            return "character-form";
+        }
+
+        DcCharacter updated = service.updateCharacter(id, character);
+
+        redirectAttributes.addFlashAttribute(
+                "message", updated.getName() + " was updated.");
+
+        return "redirect:/characters/" + id;
+    }
+
 }
