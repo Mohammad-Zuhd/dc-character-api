@@ -171,4 +171,10 @@ public class CharacterUiController {
 
         return "redirect:/";
     }
+
+    // ----- About Page -----
+    @GetMapping("/about")
+    public String about() {
+        return "about";
+    }
 }
