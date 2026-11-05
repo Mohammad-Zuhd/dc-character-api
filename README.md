@@ -12,12 +12,12 @@ The API uses JSON request and response bodies. The `name` and `description` fiel
 
 A REST API for managing DC Comics characters, including heroes and villains, built with Spring Boot using a layered architecture. Data is stored in PostgreSQL (Neon).
 
-This branch also includes a server-rendered MVC web interface for browsing and managing characters in a browser. The web interface and JSON API share the same service, repository, and database.
+This branch also includes a server rendered MVC web interface for browsing and managing characters in a browser. The web interface and JSON API share the same service, repository, and database.
 
 ## Features
 
 - Create, read, update, and delete DC characters
-- Partial, case-insensitive search by character name
+- Partial, case insensitive search by character name
 - Filter characters by role (for example, Hero or Villain)
 - Combine name and role filters in the web gallery
 - Browse character cards, view details, and add, edit, or delete characters through an MVC interface
@@ -267,30 +267,16 @@ The application uses `spring.jpa.hibernate.ddl-auto=update` to update its databa
 1. Create or open your Neon database and copy its connection details.
 2. Set the environment variables in the same terminal where you will start the application.
 
-   **PowerShell (Windows):**
-
    ```powershell
-   $env:SPRING_DATASOURCE_URL = "jdbc:postgresql://<neon-host>/<database>?sslmode=require"
-   $env:SPRING_DATASOURCE_USERNAME = "<neon-username>"
-   $securePassword = Read-Host "Enter Neon password" -AsSecureString
-   $env:SPRING_DATASOURCE_PASSWORD = [System.Net.NetworkCredential]::new("", $securePassword).Password
+   Mac/Linux: export SPRING_DATASOURCE_URL="jdbc:postgresql://<neon-host>/<db>?sslmode=require"
+   Windows: set SPRING_DATASOURCE_URL=jdbc:postgresql://<neon-host>/<db>?sslmode=require
+   PowerShell: $env:SPRING_DATASOURCE_URL="jdbc:postgresql://<neon-host>/<db>?sslmode=require"
    ```
-
-   **Mac / Linux:**
-
-   ```bash
-   export SPRING_DATASOURCE_URL='jdbc:postgresql://<neon-host>/<database>?sslmode=require'
-   export SPRING_DATASOURCE_USERNAME='<neon-username>'
-   export SPRING_DATASOURCE_PASSWORD='<neon-password>'
-   ```
-
 3. Start the app:
 
    ```bash
    ./mvnw spring-boot:run         # Mac / Linux
-   ```
 
-   ```powershell
    .\mvnw.cmd spring-boot:run    # Windows
    ```
 
@@ -319,5 +305,5 @@ The MVC pages at [https://dc-character-api.onrender.com/](https://dc-character-a
 > **Free-tier notes**
 >
 > - Render free services may take longer to respond after inactivity.
-> - Neon may have a short first-query delay after idling.
+> - Neon may have a short first query delay after idling.
 > - Render's local filesystem is not persistent. Character data is stored in Neon; bundled local images are included with the application build.
