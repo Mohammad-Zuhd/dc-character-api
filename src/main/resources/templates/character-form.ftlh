@@ -10,7 +10,14 @@
         a character in the DC gallery.
     </p>
 
-    <form method="post" action="${formAction}">
+    <!-- Validation Error Message -->
+    <#if validationError??>
+        <div class="alert alert-danger" role="alert">
+            ${validationError}
+        </div>
+    </#if>
+
+    <form method="post" action="${formAction}" novalidate>
 
         <!-- Character Name -->
         <div class="mb-3">
