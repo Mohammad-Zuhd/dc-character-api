@@ -1,3 +1,4 @@
+
 package edu.uncg.dccharacterapi.repository;
 
 import edu.uncg.dccharacterapi.entity.DcCharacter;
@@ -10,4 +11,7 @@ public interface DcCharacterRepository
     List<DcCharacter> findByRoleIgnoreCase(String role);
 
     List<DcCharacter> findByNameContainingIgnoreCase(String name);
+
+    List<DcCharacter> findByNameContainingIgnoreCaseAndRoleIgnoreCase(
+            String name, String role);
 }
